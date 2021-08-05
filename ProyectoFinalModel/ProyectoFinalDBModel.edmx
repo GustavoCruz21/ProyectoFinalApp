@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ProyectModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="IdCliente" />
+          </Key>
+          <Property Name="IdCliente" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RutCliente" Type="varchar" MaxLength="13" />
+          <Property Name="NombreCliente" Type="varchar" MaxLength="30" />
+          <Property Name="ContrasenaCliente" Type="varchar" MaxLength="15" />
+          <Property Name="CorreoCliente" Type="varchar" MaxLength="35" />
+          <Property Name="IdMedidor" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Medidor">
+          <Key>
+            <PropertyRef Name="IdMedidor" />
+          </Key>
+          <Property Name="IdMedidor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NroMedidor" Type="int" />
+          <Property Name="FechaMedidor" Type="datetime" />
+          <Property Name="ValorConsumo" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <Association Name="FK_Cliente_Medidor">
+          <End Role="Medidor" Type="Self.Medidor" Multiplicity="1" />
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Medidor">
+              <PropertyRef Name="IdMedidor" />
+            </Principal>
+            <Dependent Role="Cliente">
+              <PropertyRef Name="IdMedidor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ProyectModelStoreContainer">
+          <EntitySet Name="Cliente" EntityType="Self.Cliente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Medidor" EntityType="Self.Medidor" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Cliente_Medidor" Association="Self.FK_Cliente_Medidor">
+            <End Role="Medidor" EntitySet="Medidor" />
+            <End Role="Cliente" EntitySet="Cliente" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ProyectModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="IdCliente" />
+          </Key>
+          <Property Name="IdCliente" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RutCliente" Type="String" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="NombreCliente" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ContrasenaCliente" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="CorreoCliente" Type="String" MaxLength="35" FixedLength="false" Unicode="false" />
+          <Property Name="IdMedidor" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Medidor" Relationship="Self.FK_Cliente_Medidor" FromRole="Cliente" ToRole="Medidor" />
+        </EntityType>
+        <EntityType Name="Medidor">
+          <Key>
+            <PropertyRef Name="IdMedidor" />
+          </Key>
+          <Property Name="IdMedidor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NroMedidor" Type="Int32" />
+          <Property Name="FechaMedidor" Type="DateTime" Precision="3" />
+          <Property Name="ValorConsumo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Clientes" Relationship="Self.FK_Cliente_Medidor" FromRole="Medidor" ToRole="Cliente" />
+        </EntityType>
+        <Association Name="FK_Cliente_Medidor">
+          <End Role="Medidor" Type="Self.Medidor" Multiplicity="1" />
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Medidor">
+              <PropertyRef Name="IdMedidor" />
+            </Principal>
+            <Dependent Role="Cliente">
+              <PropertyRef Name="IdMedidor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ProyectEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Clientes" EntityType="Self.Cliente" />
+          <EntitySet Name="Medidors" EntityType="Self.Medidor" />
+          <AssociationSet Name="FK_Cliente_Medidor" Association="Self.FK_Cliente_Medidor">
+            <End Role="Medidor" EntitySet="Medidors" />
+            <End Role="Cliente" EntitySet="Clientes" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ProyectModelStoreContainer" CdmEntityContainer="ProyectEntities">
+          <EntitySetMapping Name="Clientes">
+            <EntityTypeMapping TypeName="ProyectModel.Cliente">
+              <MappingFragment StoreEntitySet="Cliente">
+                <ScalarProperty Name="IdCliente" ColumnName="IdCliente" />
+                <ScalarProperty Name="RutCliente" ColumnName="RutCliente" />
+                <ScalarProperty Name="NombreCliente" ColumnName="NombreCliente" />
+                <ScalarProperty Name="ContrasenaCliente" ColumnName="ContrasenaCliente" />
+                <ScalarProperty Name="CorreoCliente" ColumnName="CorreoCliente" />
+                <ScalarProperty Name="IdMedidor" ColumnName="IdMedidor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Medidors">
+            <EntityTypeMapping TypeName="ProyectModel.Medidor">
+              <MappingFragment StoreEntitySet="Medidor">
+                <ScalarProperty Name="IdMedidor" ColumnName="IdMedidor" />
+                <ScalarProperty Name="NroMedidor" ColumnName="NroMedidor" />
+                <ScalarProperty Name="FechaMedidor" ColumnName="FechaMedidor" />
+                <ScalarProperty Name="ValorConsumo" ColumnName="ValorConsumo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
